@@ -1,5 +1,24 @@
 import { Button } from '@mui/material';
 import styles from './ErrorModal.module.css';
+import { createPortal } from 'react-dom';
+
+const Backdrop = (props) => {
+	return <div className={styles.backdrop} onClick={props.closeHandler}></div>;
+};
+
+const Modal = (props) => {
+	return (
+		<div className={styles.modal}>
+			<div className={styles.header}>
+				<h2>Некорректный ввод</h2>
+			</div>
+			<div className={styles.content}>Эти поля не могут быть пустыми</div>
+			<Button onClick={props.closeHandler} variant="contained">
+				Закрыть
+			</Button>
+		</div>
+	);
+};
 
 const ErrorModal = ({ onCloseHandler }) => {
 	const closeHandler = () => {
@@ -7,27 +26,16 @@ const ErrorModal = ({ onCloseHandler }) => {
 	};
 
 	return (
-		<div className={styles.backdrop} onClick={closeHandler}>
-			<div className={styles.modal}>
-				<div className={styles.header}>
-					<h2>Некорректный ввод</h2>
-				</div>
-				<div className={styles.content}>Эти поля не могут быть пустыми</div>
-				{/* <button
-					className={styles.actions}
-					onClick={props.onCloseHandler(false)}
-				>
-					Закрыть
-				</button> */}
-				<Button
-					onClick={closeHandler}
-					// className={styles.actions}
-					variant="contained"
-				>
-					Закрыть
-				</Button>
-			</div>
-		</div>
+		<>
+			{createPortal(
+				<Backdrop closeHandler={closeHandler} />,
+				document.querySelector('#backdrop')
+			)}
+			{createPortal(
+				<Modal closeHandler={closeHandler} />,
+				document.querySelector('#modal')
+			)}
+		</>
 	);
 };
 
