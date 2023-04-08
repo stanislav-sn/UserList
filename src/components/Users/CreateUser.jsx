@@ -18,13 +18,11 @@ const CreateUser = ({ onAddUser }) => {
 
 	const submitHandler = (event) => {
 		event.preventDefault();
-
-		if (inputName && inputAge > 0) {
+		if (inputName.trim().length === 0 || inputAge.trim().length <= 0) {
+			errorModalHandler(true);
+		} else {
 			errorModalHandler(false);
 			onAddUser = onAddUser(inputName, inputAge);
-		} else {
-			errorModalHandler(true);
-			console.log('MODAL ERROR');
 		}
 	};
 
